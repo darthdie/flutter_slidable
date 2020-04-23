@@ -134,7 +134,7 @@ class IconSlideAction extends ClosableSlideAction {
         );
 
   /// The icon to show.
-  final IconData icon;
+  final Icon icon;
 
   /// A custom widget to represent the icon.
   /// If both [icon] and [iconWidget] are set, they will be shown at the same
@@ -142,7 +142,7 @@ class IconSlideAction extends ClosableSlideAction {
   final Widget iconWidget;
 
   /// The caption below the icon.
-  final String caption;
+  final Widget caption;
 
   /// The background color.
   ///
@@ -154,50 +154,20 @@ class IconSlideAction extends ClosableSlideAction {
 
   @override
   Widget buildAction(BuildContext context) {
-    final Color estimatedColor =
-        ThemeData.estimateBrightnessForColor(color) == Brightness.light
-            ? Colors.black
-            : Colors.white;
-
-    final List<Widget> widgets = [];
-
-    if (icon != null) {
-      widgets.add(
-        Flexible(
-          child: new Icon(
-            icon,
-            color: foregroundColor ?? estimatedColor,
-          ),
-        ),
-      );
-    }
-
-    if (iconWidget != null) {
-      widgets.add(
-        Flexible(child: iconWidget),
-      );
-    }
-
-    if (caption != null) {
-      widgets.add(
-        Flexible(
-          child: Text(
-            caption,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context)
-                .primaryTextTheme
-                .caption
-                .copyWith(color: foregroundColor ?? estimatedColor),
-          ),
-        ),
-      );
-    }
-
     return Container(
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: widgets,
+          children: [
+            if (icon != null)
+              Flexible(child: icon),
+            
+            if (iconWidget != null)
+              Flexible(child: iconWidget),
+
+            if (caption != null)
+              Flexible(child: caption)
+          ]
         ),
       ),
     );
